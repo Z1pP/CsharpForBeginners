@@ -7,22 +7,93 @@ namespace HuntTheWumpus
 {
     public class StartGame
     {
-        public static void Start()
+        public enum Direction
         {
-            Console.Write("Укажите размер карты: ");
-            int size = int.Parse(Console.ReadLine());
-            Console.WriteLine($"Укажите число Wumpus-ов");
-            Wumpos wumpol = new Wumpos("Wumpul", byte.Parse(Console.ReadLine()),'#');
-            Console.WriteLine($"Укажите число Мышей");
-            Bat bat = new Bat("Batman", byte.Parse(Console.ReadLine()),'0');
-            User user = new User();
+            Up=1,
+            Down=2,
+            Right=3,
+            Left=4
+        }
+        public void Start()
+        {
+            PlayMap playZone = new PlayMap(3);
 
-            while (true)
+            User user = new User(new Coordinates(2,0));
+            Wumpos wumpos = new Wumpos(new Coordinates(5, 2));
+
+            playZone.AddGameObject(user);
+            //playZone.AddGameObject(wumpos);
+            //playZone.AddGameObject(new Bat(new Coordinates(1, 3)));
+            //playZone.AddGameObject(new Bat(new Coordinates(2, 5)));
+
+            var values = Enum.GetValues(typeof(Direction));
+            Random random = new Random();
+            Direction direction;
+
+            while (user.IsAlive && wumpos.IsAlive)
             {
-                Logic(size,user,bat,wumpol);
                 Console.Clear();
+                PrintMap(playZone.RenderMap());
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        {
+                            user.Move(Direction.Up);
+
+                            break;
+                        }
+                    case ConsoleKey.DownArrow:
+                        {
+                            user.Move(Direction.Down);
+                            break;
+                        }
+                    case ConsoleKey.RightArrow:
+                        {
+                            user.Move(Direction.Right);
+                            break;
+                        }
+                    case ConsoleKey.LeftArrow:
+                        {
+                            user.Move(Direction.Left);
+                            break;
+                        }
+                }
+
+                direction = (Direction)values.GetValue(random.Next(values.Length));
+                wumpos.Move(direction);
+
+                if (keyInfo.Key == ConsoleKey.Escape)
+                    break;
+
+
+                if (!user.IsAlive)
+                {
+                    Console.WriteLine("Вы выйграли!!!");
+                    break;
+                }                   
+                if (!wumpos.IsAlive)
+                {
+                    Console.WriteLine("Вы проиграли...");
+                    break;
+                }
             }
         }
-        
+
+        public void PrintMap(string[,] map)
+        {
+            for (int y = 0; y < map.GetLength(0); y++)
+            {
+                for (int x = 0; x < map.GetLength(1); x++)
+                {
+                    Console.Write(map[x, y]);
+                }
+
+                Console.WriteLine();
+            }
+        }
+
     }
 }

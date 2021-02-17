@@ -4,8 +4,8 @@ using System.Text;
 
 namespace HuntTheWumpus.Persons
 {
-    public class Bat:Person
+    public class Bat:GameObject
     {
-        public Bat(string name, byte count,char symbl) : base(name, count,symbl) { }
+        public Bat(Coordinates coordinates) : base("Bat", 1, 'B',coordinates) { }
     }
 }

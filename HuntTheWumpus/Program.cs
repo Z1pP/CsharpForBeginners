@@ -6,7 +6,8 @@ namespace HuntTheWumpus
     {
         static void Main(string[] args)
         {
-            StartGame.Start();
+            StartGame game = new StartGame();
+            game.Start();
         }
     }
 }
