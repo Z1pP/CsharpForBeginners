@@ -16,22 +16,24 @@ namespace HuntTheWumpus
         }
         public void Start()
         {
-            PlayMap playZone = new PlayMap(3);
+            PlayMap playZone = new PlayMap(6);
 
             User user = new User(new Coordinates(2,0));
             Wumpos wumpos = new Wumpos(new Coordinates(5, 2));
 
             playZone.AddGameObject(user);
-            //playZone.AddGameObject(wumpos);
-            //playZone.AddGameObject(new Bat(new Coordinates(1, 3)));
-            //playZone.AddGameObject(new Bat(new Coordinates(2, 5)));
+            playZone.AddGameObject(wumpos);
+            playZone.AddGameObject(new Bat(new Coordinates(1, 3)));
+            playZone.AddGameObject(new Bat(new Coordinates(2, 5)));
+            playZone.AddGameObject(new Pit(new Coordinates(2, 2)));
 
             var values = Enum.GetValues(typeof(Direction));
             Random random = new Random();
             Direction direction;
 
+
             while (user.IsAlive && wumpos.IsAlive)
-            {
+            { 
                 Console.Clear();
                 PrintMap(playZone.RenderMap());
 
@@ -62,11 +64,9 @@ namespace HuntTheWumpus
                         }
                 }
 
-                direction = (Direction)values.GetValue(random.Next(values.Length));
-                wumpos.Move(direction);
+                direction = (Direction)values.GetValue(random.Next(values.Length)); // выбор случайного направлениея для Вумпуса
+                wumpos.Move(direction); // ход Вумпуса
 
-                if (keyInfo.Key == ConsoleKey.Escape)
-                    break;
 
 
                 if (!user.IsAlive)
@@ -77,6 +77,11 @@ namespace HuntTheWumpus
                 if (!wumpos.IsAlive)
                 {
                     Console.WriteLine("Вы проиграли...");
+                    break;
+                }
+                if (keyInfo.Key == ConsoleKey.Escape)
+                {
+                    Console.WriteLine($"Намеренное завершение игры!");
                     break;
                 }
             }
@@ -93,7 +98,8 @@ namespace HuntTheWumpus
 
                 Console.WriteLine();
             }
-        }
+        }       
+        
 
     }
 }

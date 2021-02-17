@@ -19,7 +19,6 @@ namespace HuntTheWumpus.Persons
             Coordinates = coordinates;
         }
 
-        public Coordinates GetCoordinates() => Coordinates;
         public string GetSymbolPerson() => SymbolPerson.ToString();
 
         public virtual void Move(Direction direction)
