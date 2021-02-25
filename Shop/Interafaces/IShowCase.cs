@@ -4,7 +4,7 @@ using System.Text;
 using Shop.Models;
 namespace Shop.Interafaces
 {
-    interface IProductStore
+    interface IShowCase
     {
          uint Id { get; set; }
          string Name { get; set; }
@@ -13,9 +13,9 @@ namespace Shop.Interafaces
          DateTime RemovalTime { get; set; }
 
 
-        void ShowProducts(ProductStore productStore);
-        void AddProduct(ProductStore productStore);
-        void RemoveProduct(ProductStore productStore);
+        void ShowProducts(ShowCase showCase);
+        void AddProduct(ShowCase showCase);
+        void RemoveProduct(ShowCase showCase);
         
     }
 }

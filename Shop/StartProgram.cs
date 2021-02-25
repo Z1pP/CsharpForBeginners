@@ -9,29 +9,28 @@ namespace Shop
 {
     public class StartProgram
     {
-        public Thread Thread;
         public ConsoleKeyInfo keyInfo;
-        public List<ProductStore> productStores;
+        public List<ShowCase> productStores;
         public uint IdForShowWindow = 3;
         public void Start()
         {
             //Дефолтное добавление витрин в магазин
 
-            productStores = new List<ProductStore>
+            productStores = new List<ShowCase>
             {
-                new ProductStore("Игрушки для взрослых", 20,0),
-                new ProductStore("Латексные изделия", 50,1),
-                new ProductStore("Костюмы для ролевых игр",35,2)
+                new ShowCase("Игрушки для взрослых", 20,0),
+                new ShowCase("Латексные изделия", 50,1),
+                new ShowCase("Костюмы для ролевых игр",35,2)
             };
 
-            bool flag = true;
-            while (flag)
+            bool isContinue = true;
+            while (isContinue)
             {
                 Console.WriteLine("Выберите необходимую операцию\n" +
                     "\t[1] ----> Создать новую витрину с названием и объемом\n" +
                     "\t[2] ----> Отредактировать витрину\n" +
                     "\t[3] ----> Удалить витрину\n" +
-                    "\t[4] ----> Добавить товар в существующую витрину\n" +
+                    "\t[4] ----> Операции с товаром\n" +
                     "\t[ESCAPE] ----> Выход\n");
 
                 keyInfo = Console.ReadKey(true);
@@ -39,7 +38,7 @@ namespace Shop
                 switch (keyInfo.KeyChar)
                 {
                     case '1': //Создать новую ветрину 
-                        ProductStore productStore = CreateProductStore();
+                        ShowCase productStore = CreateProductStore();
                         productStores.Add(productStore);
                         IdForShowWindow++;
                         break;
@@ -53,7 +52,7 @@ namespace Shop
                         ActionWithProductStore(productStores);
                         break;
                     case (char)ConsoleKey.Escape:
-                        flag = false;
+                        isContinue = false;
                         break;
                 }
                 Console.Clear();
@@ -61,21 +60,21 @@ namespace Shop
         }
 
         //Создание витрины
-        public ProductStore CreateProductStore()
+        public ShowCase CreateProductStore()
         {
             Console.Write("Введите имя витрины --> ");
             string name = Console.ReadLine();
             Console.Write("Введите размер витрины --> ");
             int size = int.Parse(Console.ReadLine());
-            return new ProductStore(name, size, IdForShowWindow);
+            return new ShowCase(name, size, IdForShowWindow);
         }
 
         //Вывод списка витрин в консоль
-        public void ShowProductStores(List<ProductStore> productStores)
+        public void ShowProductStores(List<ShowCase> productStores)
         {
             int counter = 1;
             Console.WriteLine("Список доступных витрин: ");
-            foreach (ProductStore showWindow in productStores)
+            foreach (ShowCase showWindow in productStores)
             {
                 Console.WriteLine($"{counter}.[ID {showWindow.Id}|NAME - {showWindow.Name}|Size - {showWindow.Size}| CreateTime - {showWindow.CreationTime}]");
                 counter++;
@@ -83,13 +82,13 @@ namespace Shop
         }
 
         //Редактирование витрины
-        public void EditProductStore(List<ProductStore> productStores)
+        public void EditProductStore(List<ShowCase> productStores)
         {
             ShowProductStores(productStores);
             Console.WriteLine("\nВыберите Id витрины для редактирования");
             int number = int.Parse(Console.ReadLine());
 
-            ProductStore store = new ProductStore();
+            ShowCase store = new ShowCase();
 
             for (int i = 0; i < productStores.Count; i++)
             {
@@ -121,13 +120,13 @@ namespace Shop
         }
 
         //Удаление витрины
-        public void RemoveProductStore(List<ProductStore> productStores)
+        public void RemoveProductStore(List<ShowCase> productStores)
         {
             ShowProductStores(productStores);
             Console.WriteLine("\nВыберите Id витрины для удаления");
             int number = int.Parse(Console.ReadLine());
 
-            ProductStore store = new ProductStore();
+            ShowCase store = new ShowCase();
             for (int i = 0; i < productStores.Count; i++)
             {
                 if (number == productStores[i].Id)
@@ -151,13 +150,13 @@ namespace Shop
         }
 
         //Действия с витриной
-        public void ActionWithProductStore(List<ProductStore> productStores)
+        public void ActionWithProductStore(List<ShowCase> productStores)
         {
             ShowProductStores(productStores);
             Console.WriteLine("\nВыберите Id витрины для для добавления товаров");
             int number = int.Parse(Console.ReadLine());
 
-            ProductStore store = new ProductStore();
+            ShowCase store = new ShowCase();
             for (int i = 0; i < productStores.Count; i++)
             {
                 if (number == productStores[i].Id)
@@ -166,8 +165,9 @@ namespace Shop
                 }
             }
             Console.Clear();
-            bool flag = true;
-            while (flag)
+
+            bool isContinue = true;
+            while (isContinue)
             {
                 Console.WriteLine($"[ID {store.Id}|NAME - {store.Name}|Size - {store.Size}| CreateTime - {store.CreationTime}]");
 
@@ -191,7 +191,7 @@ namespace Shop
                         store.ShowProducts(store);
                         break;
                     case '4':
-                        flag = false;
+                        isContinue = false;
                         break;
                 }
                 Console.Clear();

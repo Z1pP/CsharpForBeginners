@@ -20,5 +20,9 @@ namespace Shop.Models
             OccupiedSize = size;
             Price = price;
         }
+        public static void AddDefaultProduct()
+        {
+
+        }
     }
 }
